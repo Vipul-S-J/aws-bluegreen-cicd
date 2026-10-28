@@ -73,6 +73,7 @@ cicd-automation/
 ├── Asg-mixed-instance-policy.json   # ASG mixed-instances policy (Graviton + x86, Spot)
 ├── .gitlab-ci.yml                   # GitLab CI/CD pipeline (build → upload → deploy)
 ├── docs/
+│   ├── architecture.svg             # Architecture diagram (official AWS Architecture Icons)
 │   ├── codedeploy-setup.md          # AWS CodeDeploy blue/green configuration
 │   └── gitlab-setup.md              # GitLab environments, CI/CD variables & runner setup
 └── aws-cd/                          # CodeDeploy deployment lifecycle scripts
