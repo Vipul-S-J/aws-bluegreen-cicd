@@ -1,0 +1,20 @@
+version: 0.0
+os: linux
+# root dir = /opt/codedeploy-agent/deployment-root/deployment-group-id/deployment-id
+hooks:
+  AfterInstall:
+    - location: aws-cd/after_install.sh
+      timeout: 180
+      runas: root
+  ApplicationStart:
+    - location: aws-cd/application_start.sh
+      timeout: 180
+      runas: root
+  ValidateService:
+    - location: aws-cd/validate_service.sh
+      timeout: 180
+      runas: root
+  AfterBlockTraffic:
+    - location: aws-cd/after_block_traffic.sh
+      timeout: 180
+      runas: root

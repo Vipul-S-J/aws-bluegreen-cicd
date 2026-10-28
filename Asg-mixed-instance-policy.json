@@ -1,0 +1,80 @@
+{
+  "AutoScalingGroupName": "<auto-scaling-group-name>",
+  "MixedInstancesPolicy": {
+    "LaunchTemplate": {
+      "LaunchTemplateSpecification": {
+        "LaunchTemplateId": "<primary-launch-template-id>",
+        "Version": "<version>"
+      },
+      "Overrides": [
+        {
+          "InstanceType": "c7g.2xlarge",
+          "WeightedCapacity": "1",
+          "LaunchTemplateSpecification": {
+            "LaunchTemplateId": "<graviton-launch-template-id>",
+            "Version": "$Latest"
+          }
+        },
+        {
+          "InstanceType": "c6g.2xlarge",
+          "WeightedCapacity": "1",
+          "LaunchTemplateSpecification": {
+            "LaunchTemplateId": "<graviton-launch-template-id>",
+            "Version": "$Latest"
+          }
+        },
+        { "InstanceType": "c5a.2xlarge",  "WeightedCapacity": "1" },
+        { "InstanceType": "c6a.2xlarge",  "WeightedCapacity": "1" },
+        {
+          "InstanceType": "c8g.2xlarge",
+          "WeightedCapacity": "1",
+          "LaunchTemplateSpecification": {
+            "LaunchTemplateId": "<graviton-launch-template-id>",
+            "Version": "$Latest"
+          }
+        },
+        {
+          "InstanceType": "m6g.2xlarge",
+          "WeightedCapacity": "1",
+          "LaunchTemplateSpecification": {
+            "LaunchTemplateId": "<graviton-launch-template-id>",
+            "Version": "$Latest"
+          }
+        },
+        { "InstanceType": "c5.2xlarge",   "WeightedCapacity": "1" },
+        { "InstanceType": "c6i.2xlarge",  "WeightedCapacity": "1" },
+        {
+          "InstanceType": "m7g.2xlarge",
+          "WeightedCapacity": "1",
+          "LaunchTemplateSpecification": {
+            "LaunchTemplateId": "<graviton-launch-template-id>",
+            "Version": "$Latest"
+          }
+        },
+        { "InstanceType": "c7i.2xlarge",  "WeightedCapacity": "1" },
+        { "InstanceType": "m5a.2xlarge",  "WeightedCapacity": "1" },
+        { "InstanceType": "m6a.2xlarge",  "WeightedCapacity": "1" },
+        {
+          "InstanceType": "m8g.2xlarge",
+          "WeightedCapacity": "1",
+          "LaunchTemplateSpecification": {
+            "LaunchTemplateId": "<graviton-launch-template-id>",
+            "Version": "$Latest"
+          }
+        },
+        { "InstanceType": "c4.2xlarge",   "WeightedCapacity": "1" },
+        { "InstanceType": "m5.2xlarge",   "WeightedCapacity": "1" },
+        { "InstanceType": "m6i.2xlarge",  "WeightedCapacity": "1" },
+        { "InstanceType": "m7i.2xlarge",  "WeightedCapacity": "1" }
+      ]
+    },
+    "InstancesDistribution": {
+      "OnDemandAllocationStrategy": "prioritized",
+      "OnDemandBaseCapacity": 1,
+      "OnDemandPercentageAboveBaseCapacity": 30,
+      "SpotAllocationStrategy": "price-capacity-optimized"
+    }
+  }
+}
+
+
