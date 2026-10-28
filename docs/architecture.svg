@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" font-family="Arial, Helvetica, sans-serif" role="img" aria-label="AWS Blue/Green CI/CD architecture: GitLab to GitLab Runner to S3 to CodeDeploy to EC2 Auto Scaling Group">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#232f3e"/>
+    </marker>
+    <style>
+      .lbl   { fill:#232f3e; font-size:14px; font-weight:bold; text-anchor:middle; }
+      .sub   { fill:#5a6b7b; font-size:11px; text-anchor:middle; }
+      .ico   { fill:#fff; font-size:13px; font-weight:bold; text-anchor:middle; }
+      .flow  { stroke:#232f3e; stroke-width:2.5; fill:none; }
+      .pipe  { fill:none; stroke:#879196; stroke-width:1.5; stroke-dasharray:5 4; }
+      .ptxt  { fill:#232f3e; font-size:13px; font-weight:bold; text-anchor:middle; }
+    </style>
+  </defs>
+
+  <!-- AWS CodePipeline grouping box over S3 + CodeDeploy -->
+  <rect x="300" y="70" width="330" height="200" rx="14" class="pipe"/>
+  <rect x="405" y="22" width="34" height="30" rx="4" fill="#e06c2b"/>
+  <rect x="408" y="18" width="34" height="30" rx="4" fill="#8c4bff"/>
+  <text x="520" y="40" class="ptxt">AWS CodePipeline</text>
+
+  <!-- 1. GitLab -->
+  <g>
+    <rect x="30" y="120" width="70" height="70" rx="10" fill="#fff" stroke="#fc6d26" stroke-width="2.5"/>
+    <path d="M65 130 l10 30 h-20 z" fill="#fc6d26"/>
+    <path d="M65 130 l-18 13 7 22 11 -5 z" fill="#e24329"/>
+    <path d="M65 130 l18 13 -7 22 -11 -5 z" fill="#e24329"/>
+    <text x="65" y="210" class="lbl">GitLab</text>
+  </g>
+
+  <!-- 2. GitLab Runner -->
+  <g>
+    <circle cx="215" cy="155" r="36" fill="#fc6d26"/>
+    <text x="215" y="152" class="ico">▶</text>
+    <text x="215" y="170" class="ico" font-size="9">RUNNER</text>
+    <text x="215" y="210" class="lbl">GitLab Runner</text>
+  </g>
+
+  <!-- 3. Amazon S3 -->
+  <g>
+    <rect x="340" y="120" width="70" height="70" rx="8" fill="#e25444"/>
+    <path d="M375 128 c-14 0 -24 5 -24 11 v32 c0 6 10 11 24 11 s24-5 24-11 v-32 c0-6-10-11-24-11 z" fill="#8c3123"/>
+    <ellipse cx="375" cy="139" rx="24" ry="10" fill="#e25444"/>
+    <text x="375" y="210" class="lbl">S3</text>
+    <text x="375" y="225" class="sub">artifacts bucket</text>
+  </g>
+
+  <!-- 4. AWS CodeDeploy -->
+  <g>
+    <rect x="500" y="120" width="70" height="70" rx="8" fill="#759c3e"/>
+    <circle cx="535" cy="150" r="20" fill="#fff" opacity="0.9"/>
+    <path d="M535 136 a14 14 0 1 0 12 7" fill="none" stroke="#759c3e" stroke-width="4"/>
+    <path d="M547 140 l2 -8 -8 2 z" fill="#759c3e"/>
+    <text x="535" y="210" class="lbl">CodeDeploy</text>
+    <text x="535" y="225" class="sub">{ } appspec.yml</text>
+  </g>
+
+  <!-- 5. EC2 Instance -->
+  <g>
+    <rect x="790" y="120" width="70" height="70" rx="8" fill="#e8830c"/>
+    <rect x="808" y="138" width="34" height="34" fill="#fff" opacity="0.9"/>
+    <rect x="814" y="144" width="22" height="22" fill="#e8830c"/>
+    <text x="825" y="210" class="lbl">EC2 (ASG)</text>
+    <text x="825" y="225" class="sub">blue / green fleet</text>
+  </g>
+
+  <!-- flow arrows -->
+  <line x1="102" y1="155" x2="172" y2="155" class="flow" marker-end="url(#arrow)"/>
+  <line x1="254" y1="155" x2="332" y2="155" class="flow" marker-end="url(#arrow)"/>
+  <line x1="412" y1="155" x2="494" y2="155" class="flow" marker-end="url(#arrow)"/>
+  <line x1="572" y1="155" x2="784" y2="155" class="flow" marker-end="url(#arrow)"/>
+
+  <!-- caption -->
+  <text x="450" y="305" class="sub" font-size="12">git push → build &amp; package → upload artifact to S3 → CodeDeploy blue/green → EC2 Auto Scaling Group</text>
+</svg>

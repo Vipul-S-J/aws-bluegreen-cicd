@@ -6,61 +6,9 @@ Infrastructure and deployment automation for a production web application on AWS
 
 ## Architecture Overview
 
-```mermaid
-flowchart LR
-    Dev["👩‍💻 Developer<br/>git push"]
+![AWS Blue/Green CI/CD architecture — GitLab to GitLab Runner to S3 to CodeDeploy to EC2 Auto Scaling Group](docs/architecture.svg)
 
-    subgraph GLCI["🦊 GitLab CI/CD"]
-        direction TB
-        Build["Stage: build<br/>sbt dist"]
-        Upload["Stage: upload<br/>aws deploy push"]
-        Build --> Upload
-    end
-
-    Dev --> GLCI
-
-    subgraph AWS["☁️ AWS Cloud · Region"]
-        direction TB
-
-        S3["🪣 Amazon S3<br/>Artifacts Bucket<br/>app-srv-&lt;build&gt;-&lt;ts&gt;.zip"]
-        CD["🚀 AWS CodeDeploy<br/>Blue/Green · AllAtOnce"]
-
-        subgraph VPC["🔒 VPC"]
-            direction TB
-            ALB["⚖️ Application<br/>Load Balancer"]
-
-            subgraph MULTIAZ["Auto Scaling Group · Multi-AZ (1a / 1b / 1c)"]
-                direction LR
-                subgraph GREEN["🟢 Green Fleet (new)"]
-                    direction TB
-                    GInstances["Mixed Instances<br/>Graviton: c7g c6g c8g m6g m7g m8g<br/>x86: c5 c6i c7i m5 m6i m7i<br/>On-Demand base + 30% · rest Spot"]
-                end
-                subgraph BLUE["🔵 Blue Fleet (old)"]
-                    direction TB
-                    BInstances["Previous instances<br/>terminated after success<br/>(0-min wait)"]
-                end
-            end
-
-            CW["📈 CloudWatch<br/>Target Tracking<br/>~1,900 req/target"]
-        end
-
-        Upload -->|"upload zip"| S3
-        S3 -->|"pulls artifact"| CD
-        CD -->|"provision green<br/>(copy ASG)"| GREEN
-        ALB -->|"shift traffic"| GREEN
-        ALB -.->|"drain + terminate"| BLUE
-        CW -.->|"scale in / out"| MULTIAZ
-    end
-
-    classDef aws fill:#ff9900,stroke:#232f3e,color:#232f3e,stroke-width:1px;
-    classDef gitlab fill:#fc6d26,stroke:#232f3e,color:#fff;
-    classDef green fill:#d5f5e3,stroke:#1e8449,color:#145a32;
-    classDef blue fill:#d6eaf8,stroke:#2471a3,color:#1a5276;
-    class S3,CD,ALB,CW aws;
-    class Build,Upload gitlab;
-    class GInstances green;
-    class BInstances blue;
-```
+**Flow:** a `git push` to GitLab triggers the GitLab Runner (self-hosted on EC2), which builds and packages the app, then uploads the artifact to **Amazon S3**. **AWS CodeDeploy** pulls that artifact and runs a **blue/green** deployment — provisioning a new green fleet by copying the Auto Scaling Group, shifting ALB traffic to it, and terminating the old blue fleet after success.
 
 ## CI/CD Pipeline
 
